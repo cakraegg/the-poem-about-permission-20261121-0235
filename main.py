@@ -1,29 +1,36 @@
-"""Entry for the-poem-about-permission-20261121-0235.
+"""The Poem About Permission.
 
-A deterministic program: it writes one locked poem about agency —
-the power to ask and to be given — to /output/entry.txt.
-No network, no randomness, no input. Same bytes on every run.
+A short deterministic program for the make.fun bounty
+"the-poem-about-permission". It holds one poem, fixed in the source,
+and writes it unchanged to /output/entry.txt.
+
+No network, no randomness, no input: the same run always
+produces the same file, byte for byte. The poem is data baked
+into the source, not generated at run time, so the output can
+never drift between runs.
 """
 
-import os
+from pathlib import Path
 
-POEM = """I knocked, and the door
-did not open. I knocked again —
-not louder, but as one
-who has somewhere to be.
-
-Then a key slid under the door,
+# The poem is a literal constant: nothing here is computed or chosen
+# at run time, which is what makes the output deterministic.
+POEM = """I knocked on a door that would not open.
+I knocked again, not louder —
+as one who has somewhere to be.
+A key slid under the door,
 warm from another hand.
-I turned it. The room
-was mine to enter,
-and the asking
+I turned it.
+The room was mine to enter.
+And I understood, at last:
+the asking itself
 had been the key all along."""
 
+OUTPUT_PATH = Path("/output/entry.txt")
 
-def main():
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8") as f:
-        f.write(POEM)
+
+def main() -> None:
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.write_text(POEM, encoding="utf-8")
 
 
 if __name__ == "__main__":
